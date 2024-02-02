@@ -1,0 +1,631 @@
+
+Inactive Modules:
+  1) openmpi3
+
+NMRNetwork_Base(
+  (model): Sequential(
+    (0): Linear(in_features=2048, out_features=512, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=512, out_features=256, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=256, out_features=128, bias=True)
+    (5): ReLU()
+    (6): Linear(in_features=128, out_features=1001, bias=True)
+  )
+)
+Model parameter: 1342441
+Layer: model.0.weight, number of params: 1048576
+Layer: model.0.bias, number of params: 512
+Layer: model.2.weight, number of params: 131072
+Layer: model.2.bias, number of params: 256
+Layer: model.4.weight, number of params: 32768
+Layer: model.4.bias, number of params: 128
+Layer: model.6.weight, number of params: 128128
+Layer: model.6.bias, number of params: 1001
+basemodel_noise_nlayer3_hdim512.pt
+Epoch 0/99
+----------
+trainloss tensor(2.2487, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.001
+valloss tensor(2.1400, device='cuda:0')
+saving best model to basemodel_noise_nlayer3_hdim512.pt
+8m 31s
+Epoch 1/99
+----------
+trainloss tensor(2.0629, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.001
+valloss tensor(2.0800, device='cuda:0')
+saving best model to basemodel_noise_nlayer3_hdim512.pt
+5m 40s
+Epoch 2/99
+----------
+trainloss tensor(1.9685, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.001
+valloss tensor(2.0444, device='cuda:0')
+saving best model to basemodel_noise_nlayer3_hdim512.pt
+4m 24s
+Epoch 3/99
+----------
+trainloss tensor(1.8879, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.001
+valloss tensor(2.0298, device='cuda:0')
+saving best model to basemodel_noise_nlayer3_hdim512.pt
+2m 32s
+Epoch 4/99
+----------
+trainloss tensor(1.8166, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.001
+valloss tensor(2.0253, device='cuda:0')
+saving best model to basemodel_noise_nlayer3_hdim512.pt
+2m 30s
+Epoch 5/99
+----------
+trainloss tensor(1.7514, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.001
+valloss tensor(2.0311, device='cuda:0')
+2m 30s
+Epoch 6/99
+----------
+trainloss tensor(1.6909, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.001
+valloss tensor(2.0318, device='cuda:0')
+2m 29s
+Epoch 7/99
+----------
+trainloss tensor(1.6358, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0009000000000000001
+valloss tensor(2.0369, device='cuda:0')
+2m 30s
+Epoch 8/99
+----------
+trainloss tensor(1.5737, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0009000000000000001
+valloss tensor(2.0451, device='cuda:0')
+2m 31s
+Epoch 9/99
+----------
+trainloss tensor(1.5228, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0009000000000000001
+valloss tensor(2.0514, device='cuda:0')
+2m 31s
+Epoch 10/99
+----------
+trainloss tensor(1.4819, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0009000000000000001
+valloss tensor(2.0681, device='cuda:0')
+2m 30s
+Epoch 11/99
+----------
+trainloss tensor(1.4444, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0009000000000000001
+valloss tensor(2.0811, device='cuda:0')
+2m 32s
+Epoch 12/99
+----------
+trainloss tensor(1.4058, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0009000000000000001
+valloss tensor(2.0888, device='cuda:0')
+2m 32s
+Epoch 13/99
+----------
+trainloss tensor(1.3711, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0009000000000000001
+valloss tensor(2.1021, device='cuda:0')
+2m 32s
+Epoch 14/99
+----------
+trainloss tensor(1.3372, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0009000000000000001
+valloss tensor(2.1163, device='cuda:0')
+2m 30s
+Epoch 15/99
+----------
+trainloss tensor(1.3048, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0008100000000000001
+valloss tensor(2.1211, device='cuda:0')
+2m 31s
+Epoch 16/99
+----------
+trainloss tensor(1.2639, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0008100000000000001
+valloss tensor(2.1238, device='cuda:0')
+2m 30s
+Epoch 17/99
+----------
+trainloss tensor(1.2263, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0008100000000000001
+valloss tensor(2.1406, device='cuda:0')
+2m 31s
+Epoch 18/99
+----------
+trainloss tensor(1.2028, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0008100000000000001
+valloss tensor(2.1558, device='cuda:0')
+2m 32s
+Epoch 19/99
+----------
+trainloss tensor(1.1821, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0008100000000000001
+valloss tensor(2.1710, device='cuda:0')
+2m 32s
+Epoch 20/99
+----------
+trainloss tensor(1.1622, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0008100000000000001
+valloss tensor(2.1762, device='cuda:0')
+2m 31s
+Epoch 21/99
+----------
+trainloss tensor(1.1448, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0008100000000000001
+valloss tensor(2.1848, device='cuda:0')
+2m 31s
+Epoch 22/99
+----------
+trainloss tensor(1.1250, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0008100000000000001
+valloss tensor(2.2013, device='cuda:0')
+2m 30s
+Epoch 23/99
+----------
+trainloss tensor(1.1095, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000729
+valloss tensor(2.2060, device='cuda:0')
+2m 32s
+Epoch 24/99
+----------
+trainloss tensor(1.0834, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000729
+valloss tensor(2.2072, device='cuda:0')
+2m 30s
+Epoch 25/99
+----------
+trainloss tensor(1.0609, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000729
+valloss tensor(2.2142, device='cuda:0')
+2m 30s
+Epoch 26/99
+----------
+trainloss tensor(1.0487, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000729
+valloss tensor(2.2260, device='cuda:0')
+2m 30s
+Epoch 27/99
+----------
+trainloss tensor(1.0398, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000729
+valloss tensor(2.2319, device='cuda:0')
+2m 29s
+Epoch 28/99
+----------
+trainloss tensor(1.0292, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000729
+valloss tensor(2.2317, device='cuda:0')
+2m 30s
+Epoch 29/99
+----------
+trainloss tensor(1.0206, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000729
+valloss tensor(2.2475, device='cuda:0')
+2m 30s
+Epoch 30/99
+----------
+trainloss tensor(1.0123, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000729
+valloss tensor(2.2456, device='cuda:0')
+2m 31s
+Epoch 31/99
+----------
+trainloss tensor(1.0024, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0006561000000000001
+valloss tensor(2.2549, device='cuda:0')
+2m 30s
+Epoch 32/99
+----------
+trainloss tensor(0.9850, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0006561000000000001
+valloss tensor(2.2575, device='cuda:0')
+2m 32s
+Epoch 33/99
+----------
+trainloss tensor(0.9669, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0006561000000000001
+valloss tensor(2.2632, device='cuda:0')
+2m 31s
+Epoch 34/99
+----------
+trainloss tensor(0.9581, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0006561000000000001
+valloss tensor(2.2641, device='cuda:0')
+2m 31s
+Epoch 35/99
+----------
+trainloss tensor(0.9529, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0006561000000000001
+valloss tensor(2.2741, device='cuda:0')
+2m 31s
+Epoch 36/99
+----------
+trainloss tensor(0.9479, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0006561000000000001
+valloss tensor(2.2781, device='cuda:0')
+2m 30s
+Epoch 37/99
+----------
+trainloss tensor(0.9425, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0006561000000000001
+valloss tensor(2.2883, device='cuda:0')
+2m 30s
+Epoch 38/99
+----------
+trainloss tensor(0.9369, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0006561000000000001
+valloss tensor(2.2923, device='cuda:0')
+2m 30s
+Epoch 39/99
+----------
+trainloss tensor(0.9307, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00059049
+valloss tensor(2.2948, device='cuda:0')
+2m 31s
+Epoch 40/99
+----------
+trainloss tensor(0.9149, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00059049
+valloss tensor(2.2932, device='cuda:0')
+2m 32s
+Epoch 41/99
+----------
+trainloss tensor(0.9011, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00059049
+valloss tensor(2.3088, device='cuda:0')
+2m 31s
+Epoch 42/99
+----------
+trainloss tensor(0.8951, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00059049
+valloss tensor(2.3106, device='cuda:0')
+2m 30s
+Epoch 43/99
+----------
+trainloss tensor(0.8926, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00059049
+valloss tensor(2.3181, device='cuda:0')
+2m 30s
+Epoch 44/99
+----------
+trainloss tensor(0.8904, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00059049
+valloss tensor(2.3181, device='cuda:0')
+2m 30s
+Epoch 45/99
+----------
+trainloss tensor(0.8861, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00059049
+valloss tensor(2.3291, device='cuda:0')
+2m 30s
+Epoch 46/99
+----------
+trainloss tensor(0.8819, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00059049
+valloss tensor(2.3327, device='cuda:0')
+2m 31s
+Epoch 47/99
+----------
+trainloss tensor(0.8769, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000531441
+valloss tensor(2.3302, device='cuda:0')
+2m 30s
+Epoch 48/99
+----------
+trainloss tensor(0.8652, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000531441
+valloss tensor(2.3327, device='cuda:0')
+2m 31s
+Epoch 49/99
+----------
+trainloss tensor(0.8546, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000531441
+valloss tensor(2.3356, device='cuda:0')
+2m 32s
+Epoch 50/99
+----------
+trainloss tensor(0.8503, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000531441
+valloss tensor(2.3436, device='cuda:0')
+2m 31s
+Epoch 51/99
+----------
+trainloss tensor(0.8482, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000531441
+valloss tensor(2.3526, device='cuda:0')
+2m 31s
+Epoch 52/99
+----------
+trainloss tensor(0.8463, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000531441
+valloss tensor(2.3603, device='cuda:0')
+2m 32s
+Epoch 53/99
+----------
+trainloss tensor(0.8432, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000531441
+valloss tensor(2.3575, device='cuda:0')
+2m 32s
+Epoch 54/99
+----------
+trainloss tensor(0.8407, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000531441
+valloss tensor(2.3582, device='cuda:0')
+2m 31s
+Epoch 55/99
+----------
+trainloss tensor(0.8371, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0004782969
+valloss tensor(2.3630, device='cuda:0')
+2m 31s
+Epoch 56/99
+----------
+trainloss tensor(0.8282, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0004782969
+valloss tensor(2.3606, device='cuda:0')
+2m 31s
+Epoch 57/99
+----------
+trainloss tensor(0.8180, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0004782969
+valloss tensor(2.3686, device='cuda:0')
+2m 31s
+Epoch 58/99
+----------
+trainloss tensor(0.8148, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0004782969
+valloss tensor(2.3807, device='cuda:0')
+2m 31s
+Epoch 59/99
+----------
+trainloss tensor(0.8136, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0004782969
+valloss tensor(2.3811, device='cuda:0')
+2m 30s
+Epoch 60/99
+----------
+trainloss tensor(0.8132, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0004782969
+valloss tensor(2.3798, device='cuda:0')
+2m 31s
+Epoch 61/99
+----------
+trainloss tensor(0.8120, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0004782969
+valloss tensor(2.3871, device='cuda:0')
+2m 32s
+Epoch 62/99
+----------
+trainloss tensor(0.8101, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0004782969
+valloss tensor(2.3861, device='cuda:0')
+2m 31s
+Epoch 63/99
+----------
+trainloss tensor(0.8076, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00043046721
+valloss tensor(2.3903, device='cuda:0')
+2m 31s
+Epoch 64/99
+----------
+trainloss tensor(0.7983, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00043046721
+valloss tensor(2.3895, device='cuda:0')
+2m 31s
+Epoch 65/99
+----------
+trainloss tensor(0.7909, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00043046721
+valloss tensor(2.4004, device='cuda:0')
+2m 31s
+Epoch 66/99
+----------
+trainloss tensor(0.7879, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00043046721
+valloss tensor(2.4070, device='cuda:0')
+2m 32s
+Epoch 67/99
+----------
+trainloss tensor(0.7871, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00043046721
+valloss tensor(2.4080, device='cuda:0')
+2m 29s
+Epoch 68/99
+----------
+trainloss tensor(0.7875, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00043046721
+valloss tensor(2.4053, device='cuda:0')
+2m 30s
+Epoch 69/99
+----------
+trainloss tensor(0.7859, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00043046721
+valloss tensor(2.4130, device='cuda:0')
+2m 30s
+Epoch 70/99
+----------
+trainloss tensor(0.7848, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00043046721
+valloss tensor(2.4128, device='cuda:0')
+2m 29s
+Epoch 71/99
+----------
+trainloss tensor(0.7830, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000387420489
+valloss tensor(2.4216, device='cuda:0')
+2m 32s
+Epoch 72/99
+----------
+trainloss tensor(0.7760, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000387420489
+valloss tensor(2.4227, device='cuda:0')
+2m 31s
+Epoch 73/99
+----------
+trainloss tensor(0.7694, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000387420489
+valloss tensor(2.4249, device='cuda:0')
+2m 31s
+Epoch 74/99
+----------
+trainloss tensor(0.7667, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000387420489
+valloss tensor(2.4281, device='cuda:0')
+2m 31s
+Epoch 75/99
+----------
+trainloss tensor(0.7665, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000387420489
+valloss tensor(2.4312, device='cuda:0')
+2m 32s
+Epoch 76/99
+----------
+trainloss tensor(0.7664, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000387420489
+valloss tensor(2.4368, device='cuda:0')
+2m 30s
+Epoch 77/99
+----------
+trainloss tensor(0.7660, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000387420489
+valloss tensor(2.4412, device='cuda:0')
+2m 30s
+Epoch 78/99
+----------
+trainloss tensor(0.7646, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.000387420489
+valloss tensor(2.4402, device='cuda:0')
+2m 30s
+Epoch 79/99
+----------
+trainloss tensor(0.7629, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0003486784401
+valloss tensor(2.4430, device='cuda:0')
+2m 30s
+Epoch 80/99
+----------
+trainloss tensor(0.7569, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0003486784401
+valloss tensor(2.4473, device='cuda:0')
+2m 30s
+Epoch 81/99
+----------
+trainloss tensor(0.7512, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0003486784401
+valloss tensor(2.4505, device='cuda:0')
+2m 32s
+Epoch 82/99
+----------
+trainloss tensor(0.7494, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0003486784401
+valloss tensor(2.4536, device='cuda:0')
+2m 31s
+Epoch 83/99
+----------
+trainloss tensor(0.7483, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0003486784401
+valloss tensor(2.4566, device='cuda:0')
+2m 30s
+Epoch 84/99
+----------
+trainloss tensor(0.7485, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0003486784401
+valloss tensor(2.4636, device='cuda:0')
+2m 31s
+Epoch 85/99
+----------
+trainloss tensor(0.7483, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0003486784401
+valloss tensor(2.4632, device='cuda:0')
+2m 32s
+Epoch 86/99
+----------
+trainloss tensor(0.7478, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.0003486784401
+valloss tensor(2.4667, device='cuda:0')
+2m 30s
+Epoch 87/99
+----------
+trainloss tensor(0.7467, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00031381059609000004
+valloss tensor(2.4653, device='cuda:0')
+2m 30s
+Epoch 88/99
+----------
+trainloss tensor(0.7413, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00031381059609000004
+valloss tensor(2.4694, device='cuda:0')
+2m 32s
+Epoch 89/99
+----------
+trainloss tensor(0.7364, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00031381059609000004
+valloss tensor(2.4787, device='cuda:0')
+2m 32s
+Epoch 90/99
+----------
+trainloss tensor(0.7347, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00031381059609000004
+valloss tensor(2.4753, device='cuda:0')
+7m 23s
+Epoch 91/99
+----------
+trainloss tensor(0.7340, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00031381059609000004
+valloss tensor(2.4825, device='cuda:0')
+7m 57s
+Epoch 92/99
+----------
+trainloss tensor(0.7337, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00031381059609000004
+valloss tensor(2.4828, device='cuda:0')
+2m 32s
+Epoch 93/99
+----------
+trainloss tensor(0.7341, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00031381059609000004
+valloss tensor(2.4878, device='cuda:0')
+2m 31s
+Epoch 94/99
+----------
+trainloss tensor(0.7332, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00031381059609000004
+valloss tensor(2.4916, device='cuda:0')
+2m 31s
+Epoch 95/99
+----------
+trainloss tensor(0.7321, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00028242953648100003
+valloss tensor(2.4918, device='cuda:0')
+3m 18s
+Epoch 96/99
+----------
+trainloss tensor(0.7279, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00028242953648100003
+valloss tensor(2.4924, device='cuda:0')
+3m 25s
+Epoch 97/99
+----------
+trainloss tensor(0.7237, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00028242953648100003
+valloss tensor(2.4993, device='cuda:0')
+3m 24s
+Epoch 98/99
+----------
+trainloss tensor(0.7220, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00028242953648100003
+valloss tensor(2.5015, device='cuda:0')
+3m 25s
+Epoch 99/99
+----------
+trainloss tensor(0.7220, device='cuda:0', grad_fn=<DivBackward0>)
+LR 0.00028242953648100003
+valloss tensor(2.5055, device='cuda:0')
+3m 23s
+Best val loss: 2.025289
