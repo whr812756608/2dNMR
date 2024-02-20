@@ -14,7 +14,7 @@ num_chirality_tag = 3
 num_hybridization_type = 7
 
 num_bond_type = 6  # including aromatic and self-loop edge, and extra masked tokens
-num_bond_direction = 3
+num_bond_direction = 4
 
 class Projection(nn.Module):
     def __init__(self, input_size=2048, output_size=128, hidden_sizes=[512, 512]):
