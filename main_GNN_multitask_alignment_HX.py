@@ -152,7 +152,7 @@ def main(args):
 
     # 2d gnn model
     nodeEncoder = GNNNodeEncoder(args.num_layers, args.hidden_channels, JK="last", gnn_type=args.type, aggr='add')
-    model = NodeEncodeInterface(nodeEncoder, hidden_channels=args.hidden_channels, c_out_hidden=args.c_out_hidden, h_out_hidden=args.h_out_hidden)
+    model = NodeEncodeInterface(nodeEncoder, hidden_channels=args.hidden_channels, c_out_hidden=args.c_out_hidden, h_out_hidden=args.h_out_hidden, solvent_emb_dim = args.sol_emb_dim)
     # 3d gnn model
     # model = ComENet(in_embed_size=3, out_channels=1, agg_method='sum', hidden_channels=args.hidden_channels, c_out_hidden=args.c_out_hidden,\
                      # h_out_hidden=args.h_out_hidden, num_layers=args.num_layers, num_output_layers=args.num_output_layers)
@@ -171,8 +171,8 @@ def main(args):
 
     exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=8, gamma=0.9)
 
-    ckpt_path = 'gnn2d_multi_align_%s_hiddendim_%d_nlayers_%d_noutlayers_%d_couthidden_%s_houthidden_%s.pt' % \
-        (args.agg_method, args.hidden_channels, args.num_layers, args.num_output_layers, ''.join(str(i) for i in args.c_out_hidden), ''.join(str(i) for i in args.h_out_hidden))
+    ckpt_path = 'gnn2d_multi_align_%s_%s_hiddendim_%d_nlayers_%d_couthidden_%s_houthidden_%s_solventdim_%d.pt' % \
+        (args.type, args.agg_method, args.hidden_channels, args.num_layers, ''.join(str(i) for i in args.c_out_hidden), ''.join(str(i) for i in args.h_out_hidden), args.sol_emb_dim)
     print(ckpt_path)
     print( 'final_%s'%ckpt_path)
 
@@ -191,10 +191,10 @@ if __name__ == '__main__':
     args.add_argument('--type', type=str, default='gin', help='GNN type')
     args.add_argument('--hidden_channels', type=int, default=256, help='embedding dimension of gnn')
     args.add_argument('--num_layers', type=int, default=3, help='number of layers for GNN')
-    args.add_argument('--num_output_layers', type=int, default=2, help='number of layers for GNN')
     args.add_argument('--agg_method', type=str, default='sum', help='aggregation method for GNN')
-    args.add_argument('--c_out_hidden', default=[128, 64, 64], type=int, nargs="+", help='hidden dims of projection')
-    args.add_argument('--h_out_hidden', default=[128, 64, 64], type=int, nargs="+", help='hidden dims of projection')
-    
+    args.add_argument('--c_out_hidden', default=[128, 64], type=int, nargs="+", help='hidden dims of projection')
+    args.add_argument('--h_out_hidden', default=[128, 64], type=int, nargs="+", help='hidden dims of projection')
+    args.add_argument('--sol_emb_dim', type=int, default=32, help='solvent embedding dimension')
+ 
     args = args.parse_args()
     main(args)

@@ -15,15 +15,17 @@ num_hybridization_type = 7
 
 num_bond_type = 6  # including aromatic and self-loop edge, and extra masked tokens
 num_bond_direction = 4
+num_solvent_class = 9
 
 class Projection(nn.Module):
-    def __init__(self, input_size=2048, output_size=128, hidden_sizes=[512, 512]):
+    def __init__(self, input_size=2048, output_size=128, hidden_sizes=[512, 512], dropout=0.2):
         super(Projection, self).__init__()
 
         layers = []
         layers.append(nn.Linear(input_size, hidden_sizes[0]))
         for i in range(len(hidden_sizes) - 1):
             layers.append(nn.Linear(hidden_sizes[i], hidden_sizes[i+1]))
+            layers.append(nn.Dropout(dropout))
             layers.append(nn.ReLU())
 
         # Output layer
@@ -123,15 +125,16 @@ class NodeEncodeInterface(nn.Module):
                  c_out_channels=1,
                  h_out_channels=1,
                  c_out_hidden = [256, 512],
-                 h_out_hidden = [256, 512]):
+                 h_out_hidden = [256, 512],
+                 solvent_emb_dim = 32):
         super(NodeEncodeInterface, self).__init__()
         self.hidden_channels = hidden_channels
         self.c_out_channels = c_out_channels
         self.h_out_channels = h_out_channels
         self.node_encoder = node_encoder
-        self.lin_out = Projection(hidden_channels, c_out_channels, c_out_hidden)
-        self.lin_out_h = Projection(hidden_channels, h_out_channels, h_out_hidden)
-
+        self.lin_out = Projection(hidden_channels + solvent_emb_dim, c_out_channels, c_out_hidden)
+        self.lin_out_h = Projection(hidden_channels + solvent_emb_dim, h_out_channels, h_out_hidden)
+        self.solvent_embedding = torch.nn.Embedding(num_solvent_class, solvent_emb_dim)
     def predict_c(self, x, data):
         z = data.x
         batch = data.batch
@@ -188,6 +191,13 @@ class NodeEncodeInterface(nn.Module):
 
     def forward(self, batch_data):
         x =  self.node_encoder(batch_data)
+        solvent_class = batch_data.solvent_class 
+        ##### Embedding solvent class
+        solvent_class = self.solvent_embedding(solvent_class)
+        batch=batch_data.batch
+        solvent_class_per_node = solvent_class[batch]
+        x = torch.concat([solvent_class_per_node, x], dim=1)
+
         if batch_data[0].has_h:
             # print('predict CH')
             out = self.predict_ch(x, batch_data)
