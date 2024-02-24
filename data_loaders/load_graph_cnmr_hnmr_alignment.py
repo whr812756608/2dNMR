@@ -12,7 +12,8 @@ class graph_nmr_alignment_data(Dataset):
     type: c- cnmr only; b - both cnmr and hnmr; h - hnmr only (not used)'''
     def __init__(self, csv_file, graph_path, nmr_path, type = 'c'):
         df = pd.read_csv(csv_file)
-        df['file'] = df['file'].astype(str).str.zfill(9)
+        # df['file'] = df['file'].astype(str).str.zfill(9)
+        df['file'] = df['id'].astype(str)
         self.file_list = df['file'].to_list()
         self.nmr_path = nmr_path
         self.graph_path = graph_path
@@ -26,21 +27,23 @@ class graph_nmr_alignment_data(Dataset):
         graph_data.x = graph_data.x.float()
         if self.type=='c':
             hnmr_data = None
-            cnmr_file = os.path.join(self.nmr_path, 'cnmr_alignment', filename + '.csv')
+            cnmr_file = os.path.join(self.nmr_path, 'cnmr_alignment_csv_mpnn', filename + '.csv')
             cnmr_data = pd.read_csv(cnmr_file)['ppm']
             cnmr_data = torch.tensor(cnmr_data).float() / 200.0
             graph_data.has_c = True
             graph_data.has_h = False
+            graph_data.solvent_class = 8 # 8 is the "unknown" solvent class
         elif self.type=='h':
             cnmr_data = None
-            hnmr_file = os.path.join(self.nmr_path, 'hnmr_alignment', filename + '.csv')
+            hnmr_file = os.path.join(self.nmr_path, 'hnmr_alignment_csv_mpnn', filename + '.csv.csv')
             hnmr_data = pd.read_csv(hnmr_file)['ppm']
             hnmr_data = torch.tensor(hnmr_data).float() / 10.0
             graph_data.has_c = False
             graph_data.has_h = True
+            graph_data.solvent_class = 8 # 8 is the "unknown" solvent class
         else:
-            hnmr_file = os.path.join(self.nmr_path, 'hnmr_alignment', filename + '.csv')
-            cnmr_file = os.path.join(self.nmr_path, 'cnmr_alignment', filename + '.csv')
+            hnmr_file = os.path.join(self.nmr_path, 'hnmr_alignment_csv_mpnn', filename + '.csv.csv')
+            cnmr_file = os.path.join(self.nmr_path, 'cnmr_alignment_csv_mpnn', filename + '.csv')
             hnmr_data = pd.read_csv(hnmr_file)['ppm']
             cnmr_data = pd.read_csv(cnmr_file)['ppm']
             cnmr_data = torch.tensor(cnmr_data).float() / 200.0
@@ -48,6 +51,7 @@ class graph_nmr_alignment_data(Dataset):
             nmr_data = [cnmr_data, hnmr_data]
             graph_data.has_c = True
             graph_data.has_h = True
+            graph_data.solvent_class = 8 # 8 is the "unknown" solvent class
         return graph_data, cnmr_data, hnmr_data, filename
 
 

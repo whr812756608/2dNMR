@@ -1,5 +1,0 @@
-
-Inactive Modules:
-  1) openmpi3
-
-slurmstepd: error: *** JOB 9536562 ON gpu-1-4 CANCELLED AT 2024-01-27T17:41:32 DUE TO TIME LIMIT ***

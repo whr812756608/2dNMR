@@ -5,9 +5,10 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.optim import lr_scheduler
 from data_loaders.load_graph_cnmr_hnmr_alignment import graph_nmr_alignment_data, custom_collate_fn, CustomBatchSampler
-from GraphModel.Comenet_NMR_multitask import ComENet
+from GraphModel.Comenet_NMR_solvent import ComENet
 from torch.utils.data import DataLoader
 from torch.utils.data import random_split
+from torch.cuda.amp import autocast, GradScaler
 import time
 import matplotlib.pyplot as plt
 import numpy as np
@@ -49,16 +50,17 @@ def train_model(model, dataloaders, optimizer, scheduler, checkpoint_path, num_e
                         c_shifts, h_shifts = model(graph)
                         if graph[0].has_h:
                             if graph[0].has_c:
-                                loss = (nn.MSELoss()(c_shifts, cnmr) + nn.MSELoss()(h_shifts, hnmr))/2
+                                loss = (F.l1_loss(c_shifts, cnmr) + F.l1_loss(h_shifts, hnmr))/2
                             else:
-                                loss = nn.MSELoss()(h_shifts, hnmr)
+                                loss = F.l1_loss(h_shifts, hnmr)
                         else:
-                            loss = nn.MSELoss()(c_shifts, cnmr)
+                            loss = F.l1_loss(c_shifts, cnmr)
                     except Exception as e:
                         print(filename)
                         print(e)
 
                     loss *= 100
+                    # print(loss)
                     epoch_loss += loss
                     # print(graph[0].has_h, graph[0].has_c, loss)
                     if torch.isnan(loss):
@@ -70,7 +72,7 @@ def train_model(model, dataloaders, optimizer, scheduler, checkpoint_path, num_e
 
                         loss.backward()
                         optimizer.step()
-            print(i)
+            # print(i)
             epoch_loss = epoch_loss / i
             print(phase + 'loss', epoch_loss)
             if phase == 'train':
@@ -98,13 +100,14 @@ def train_model(model, dataloaders, optimizer, scheduler, checkpoint_path, num_e
 
 def main(args):
 
-    graph_path = '/scratch0/haox/2DNMR_prediction_gt/Datasets/graph3d/'
-    nmr_path = '/scratch0/haox/yunruili/'
+    # graph_path = '/scratch0/haox/2DNMR_prediction_gt/Datasets/graph3d/'
+    graph_path = '/Users/siriusxiao/Documents/Github/2DNMR_data/alignment_mpnn/graphs_3d'
+    nmr_path = '/Users/siriusxiao/Documents/Github/2DNMR_data/alignment_mpnn/'
     # cnmr_path = '/scratch0/haox/yunruili/cnmr_alignment'
     # hnmr_path = '/scratch0/haox/yunruili/hnmr_alignment'
-    csv_cnmr = './data_csv/1dnnr/filtered_cnmr_smile_dataset_22k.csv'
-    csv_hnmr = './data_csv/1dnnr/filtered_hnmr_smile_dataset_67.csv'
-    csv_common = './data_csv/1dnnr/filtered_common_smile_dataset_1600.csv'
+    csv_cnmr = 'data_csv/1dnmr/cnmr_smile_mpnn_17k.csv'
+    csv_hnmr = 'data_csv/1dnmr/hnmr_smile_mpnn_3k.csv'
+    csv_common = 'data_csv/1dnmr/common_smile_mpnn_5k.csv'
     dataset_c = graph_nmr_alignment_data(csv_cnmr, graph_path, nmr_path, type='c')
     dataset_h = graph_nmr_alignment_data(csv_hnmr, graph_path, nmr_path, type='h')
     dataset_ch = graph_nmr_alignment_data(csv_common, graph_path, nmr_path, type='both')
@@ -151,8 +154,8 @@ def main(args):
 
     dataloaders = {'train': train_custom_loader, 'val': val_custom_loader}
 
-    model = ComENet(in_embed_size=3, out_channels=1, agg_method='sum', hidden_channels=args.hidden_channels, c_out_hidden=args.c_out_hidden,\
-                     h_out_hidden=args.h_out_hidden, num_layers=args.num_layers, num_output_layers=args.num_output_layers)
+    model = ComENet(in_embed_size=3, c_out_channels=1, h_out_channels=1, agg_method='sum', hidden_channels=args.hidden_channels, c_out_hidden=args.c_out_hidden,\
+                     h_out_hidden=args.h_out_hidden, num_layers=args.num_layers, num_output_layers=args.num_output_layers, dropout=args.dropout)
 
     print(model)
 
@@ -168,8 +171,8 @@ def main(args):
 
     exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=8, gamma=0.9)
 
-    ckpt_path = 'gnn3d_multi_align_%s_hiddendim_%d_nlayers_%d_noutlayers_%d_couthidden_%s_houthidden_%s.pt' % \
-        (args.agg_method, args.hidden_channels, args.num_layers, args.num_output_layers, ''.join(str(i) for i in args.c_out_hidden), ''.join(str(i) for i in args.h_out_hidden))
+    ckpt_path = 'gnn3d_multi_align_solvent_dropout%0.2d_%s_hiddendim_%d_nlayers_%d_noutlayers_%d_couthidden_%s_houthidden_%s.pt' % \
+        (args.dropout * 10, args.agg_method, args.hidden_channels, args.num_layers, args.num_output_layers, ''.join(str(i) for i in args.c_out_hidden), ''.join(str(i) for i in args.h_out_hidden))
     print(ckpt_path)
     print( 'final_%s'%ckpt_path)
 
@@ -181,6 +184,41 @@ def main(args):
 
 
 if __name__ == '__main__':
+    # nmr_path = '/scratch0/haox/yunruili/cnmr_alignment'
+    # graph_path = '/scratch0/yunruili/nmr_alignment/graph3d'
+    # csv_file = 'data_nmr_alignment/filtered_cnmr_smile_3d.csv'
+    # dataset = graph_nmr_data(csv_file, graph_path, nmr_path)
+    # data_loader = DataLoader(dataset, batch_size=11, shuffle= True, collate_fn=custom_collate_fn)
+
+    # model = ComENet(in_embed_size=3, out_channels=1, agg_method='sum', num_layers=2, num_output_layers=2, hidden_channels=128, out_hidden=[128])
+    # # msg = model.load_state_dict(torch.load('final_gnn3d_sum_hiddendim_512_nlayers_3_noutlayers_3_outhidden_512256.pt'))
+    # # print(msg)
+    # # model = model.cuda()
+
+    # total_loss = 0
+    # nan_graph = []
+    # for graph, nmr, filename in data_loader:
+    #     # print(graph.x.shape)
+    #     # graph = graph.cuda()
+    #     # nmr_noise = nmr_noise.cuda()
+    #     loss, out_agg = model(graph, nmr)
+    #     if torch.isnan(loss):
+    #         nan_graph.append(filename)
+    #     # else:
+    #     #     print(loss)
+    #         # total_loss += loss
+    #     # nmr = nmr.detach().numpy()
+    #     # plt.figure()
+    #     # plt.plot(np.arange(1001), nmr[0])
+    #     # plt.figure()
+    #     # nmr2 = nmr2.detach().numpy()
+    #     # plt.plot(np.arange(1001), nmr2[0])
+    #     # print(out)
+    #     # print(out.shape)
+    #     # print(energy.shape)
+    #     # break
+    # print(nan_graph)
+
     args = argparse.ArgumentParser()
     args.add_argument('--batch_size', type=int, default=32, help='batch size')
     args.add_argument('--n_epoch', type=int, default=200, help='number of epochs')
@@ -189,8 +227,9 @@ if __name__ == '__main__':
     args.add_argument('--num_layers', type=int, default=3, help='number of layers for GNN')
     args.add_argument('--num_output_layers', type=int, default=2, help='number of layers for GNN')
     args.add_argument('--agg_method', type=str, default='sum', help='aggregation method for GNN')
-    args.add_argument('--c_out_hidden', default=[128, 64, 64], type=int, nargs="+", help='hidden dims of projection')
-    args.add_argument('--h_out_hidden', default=[128, 64, 64], type=int, nargs="+", help='hidden dims of projection')
+    args.add_argument('--c_out_hidden', default=[128, 128, 64], type=int, nargs="+", help='hidden dims of projection')
+    args.add_argument('--h_out_hidden', default=[128, 128, 64], type=int, nargs="+", help='hidden dims of projection')
+    args.add_argument('--dropout', default=0.4, type=float, help='drop out ratio for linear layers')
     
     args = args.parse_args()
     main(args)
