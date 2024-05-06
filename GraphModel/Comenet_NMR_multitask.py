@@ -607,11 +607,14 @@ class ComENet(nn.Module):
             num_spherical=2,
             num_output_layers=3,
             in_embed_size =560,
+            solvent_embed_size = 10,
+            solvent_channel = 64,
             agg_method = 'sum', 
             c_out_channels=1,
             h_out_channels=1,
             c_out_hidden = [256, 512],
-            h_out_hidden = [256, 512]
+            h_out_hidden = [256, 512],
+            dropout=0.2
 
     ):
         super(ComENet, self).__init__()
@@ -621,6 +624,7 @@ class ComENet(nn.Module):
         self.cutoff = cutoff
         self.num_layers = num_layers
         self.agg_method = agg_method
+        self.dropout = dropout
 
         if sym is None:
             raise ImportError("Package `sympy` could not be found.")
@@ -632,6 +636,9 @@ class ComENet(nn.Module):
         self.feature2 = angle_emb(num_radial=num_radial, num_spherical=num_spherical, cutoff=cutoff)
 
         self.emb = EmbeddingBlock(hidden_channels, act, in_embed_size =in_embed_size)
+
+        ### add solvent embedding
+        self.sol_embed = nn.Embedding(solvent_embed_size, solvent_channel)
 
         self.interaction_blocks = torch.nn.ModuleList(
             [
@@ -648,13 +655,22 @@ class ComENet(nn.Module):
             ]
         )
 
+        ###### CHANGED TO ADD DROPOUT LAYERS AND ACTIVATION
         self.lins = torch.nn.ModuleList()
         for _ in range(num_output_layers):
-            self.lins.append(Linear(hidden_channels, hidden_channels))
+            # Add a linear layer
+            self.lins.append(Linear(hidden_channels + solvent_channel, hidden_channels + solvent_channel))
+            # Add an activation function after the linear layer
+            # self.lins.append(nn.Tanh())
+            # Add a dropout layer after the activation function
+            self.lins.append(nn.Dropout(self.dropout))
+        
+        # for _ in range(num_output_layers):
+        #     self.lins.append(Linear(hidden_channels, hidden_channels))
 
         # projection layer after graph pooling to predict 2d NMR
-        self.lin_out = Projection(hidden_channels, c_out_channels, c_out_hidden)
-        self.lin_out_h = Projection(hidden_channels, h_out_channels, h_out_hidden)
+        self.lin_out = Projection(hidden_channels + solvent_channel, c_out_channels, c_out_hidden, self.dropout)
+        self.lin_out_h = Projection(hidden_channels + solvent_channel, h_out_channels, h_out_hidden, self.dropout)
 
         self.reset_parameters()
 
@@ -663,7 +679,8 @@ class ComENet(nn.Module):
         for interaction in self.interaction_blocks:
             interaction.reset_parameters()
         for lin in self.lins:
-            lin.reset_parameters()
+            if hasattr(lin, 'reset_parameters'):
+                lin.reset_parameters()
         self.lin_out.reset_parameters()
 
     def gnn_forward(self, data):
@@ -671,6 +688,9 @@ class ComENet(nn.Module):
 #         z = data.z.long()
         z = data.x
         pos = data.pos
+
+        solvent_class = data.solvent_class
+
         num_nodes = z.size(0)
         # print(pos.shape)
         # print(num_nodes)
@@ -688,6 +708,9 @@ class ComENet(nn.Module):
 
         # Embedding block.
         x = self.emb(z)
+
+        ##### Embedding solvent class
+        solvent_class = self.sol_embed(solvent_class)
 
         # Calculate distances.
         _, argmin0 = scatter_min(dist, i, dim_size=num_nodes)
@@ -808,6 +831,10 @@ class ComENet(nn.Module):
         for interaction_block in self.interaction_blocks:
             x = interaction_block(x, feature1, feature2, edge_index, batch)
 
+        # Since graph_embeds is per graph, and node_reps is per node, we need to use 'batch' to map graph embeddings to nodes
+        solvent_class_per_node = solvent_class[batch]
+        x = torch.concat([solvent_class_per_node, x], dim=1)
+        
         for lin in self.lins:
             x = self.act(lin(x))
 
@@ -878,17 +905,19 @@ class ComENet(nn.Module):
         return out
     
 class Projection(nn.Module):
-    def __init__(self, input_size=2048, output_size=128, hidden_sizes=[512, 512]):
+    def __init__(self, input_size=2048, output_size=128, hidden_sizes=[512, 512], dropout=0.2):
         super(Projection, self).__init__()
 
         layers = []
         layers.append(nn.Linear(input_size, hidden_sizes[0]))
         for i in range(len(hidden_sizes) - 1):
             layers.append(nn.Linear(hidden_sizes[i], hidden_sizes[i+1]))
+            layers.append(nn.Dropout(dropout))
             layers.append(nn.ReLU())
 
         # Output layer
         layers.append(nn.Linear(hidden_sizes[-1], output_size))
+        layers.append(nn.ReLU())
 
         # Combine all layers
         self.model = nn.Sequential(*layers)

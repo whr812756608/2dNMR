@@ -19,8 +19,9 @@ class graph_nmr_data_2d_peak(Dataset):
     def __init__(self, csv_file, graph_path, nmr_path):
         df = pd.read_csv(csv_file)
         self.file_list = df['File_name'].to_list()
+        self.solvent_class = df['solvent_class'].to_list()
         # filter out Test_*.csv
-        self.file_list = [x for x in self.file_list if not x.startswith('Test_')]
+        # self.file_list = [x for x in self.file_list if not x.startswith('Test_')]
 
         self.nmr_path = nmr_path
         self.graph_path = graph_path
@@ -28,6 +29,7 @@ class graph_nmr_data_2d_peak(Dataset):
         return len(self.file_list)
     def __getitem__(self, item):
         filename = self.file_list[item].split('.')[0]
+        solvent_class = torch.tensor(self.solvent_class[item])
 
         graph_file = os.path.join(self.graph_path, filename + '.pickle')
         graph_data = pickle.load(open(graph_file, 'rb'))
@@ -36,6 +38,7 @@ class graph_nmr_data_2d_peak(Dataset):
         # added feature to use ComENet for multitask
         graph_data.has_c = True
         graph_data.has_h = True
+        graph_data.solvent_class = solvent_class
 
         # use processed file to load c and h peaks
         cnmr = os.path.join(self.nmr_path, filename + '_c.pickle')
@@ -45,6 +48,13 @@ class graph_nmr_data_2d_peak(Dataset):
 
         c_peaks = torch.tensor(cnmr_data).view(-1, 1)
         h_peaks = torch.tensor(hnmr_data)
+
+        # sort h_peaks to be [small, large]
+        # Find rows where the first column is greater than the second column
+        condition = h_peaks[:, 0] > h_peaks[:, 1]
+
+        # For rows where condition is true, swap the columns
+        h_peaks[condition] = h_peaks[condition][:, [1, 0]]
 
         return graph_data, c_peaks, h_peaks, filename
     
@@ -62,16 +72,17 @@ def custom_collate_fn(batch):
     return batched_graph, batched_cnmr_data, batched_hnmr_data, filenames
 
 
-# nmr_path = '/scratch0/yunruili/2dnmr_30k/nmr_2dcsv_expanded/'
+# nmr_path = '/scratch0/yunruili/2dnmr_30k/nmr_2dcsv_chmatched/'
 # graph_path = '/scratch0/yunruili/2dnmr_30k/graph_3d/'
 # csv_file = 'nmr_smile_solvent_filtered2_3dgnn.csv'
 
 # data = graph_nmr_data_2d_peak(csv_file, graph_path, nmr_path)
 # dataset = DataLoader(data, batch_size=2, shuffle=False, collate_fn=custom_collate_fn)
 # for graph_data, cnmr_data, hnmr_data, filename in dataset:
-#     print(graph_data.pos.shape)
-#     print(graph_data.x.shape)
+#     # print(graph_data.pos.shape)
+#     # print(graph_data.x.shape)
 #     print(cnmr_data.shape)
 #     print(hnmr_data.shape)
 #     print(cnmr_data)
+#     print(hnmr_data)
 #     break

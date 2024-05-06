@@ -126,15 +126,26 @@ class NodeEncodeInterface(nn.Module):
                  h_out_channels=1,
                  c_out_hidden = [256, 512],
                  h_out_hidden = [256, 512],
-                 solvent_emb_dim = 32):
+                 h_solvent_emb_dim = 32,
+                 c_solvent_emb_dim = 0,
+                 use_solvent=True):
         super(NodeEncodeInterface, self).__init__()
         self.hidden_channels = hidden_channels
         self.c_out_channels = c_out_channels
         self.h_out_channels = h_out_channels
         self.node_encoder = node_encoder
-        self.lin_out = Projection(hidden_channels + solvent_emb_dim, c_out_channels, c_out_hidden)
-        self.lin_out_h = Projection(hidden_channels + solvent_emb_dim, h_out_channels, h_out_hidden)
-        self.solvent_embedding = torch.nn.Embedding(num_solvent_class, solvent_emb_dim)
+        self.use_solvent = use_solvent
+        if self.use_solvent:
+            self.lin_out = Projection(hidden_channels + c_solvent_emb_dim, c_out_channels, c_out_hidden) # DO NOT USE SOLVENT ON C, + solvent_emb_dim
+            self.lin_out_h = Projection(hidden_channels + h_solvent_emb_dim, h_out_channels, h_out_hidden) 
+            self.h_solvent_embedding = torch.nn.Embedding(num_solvent_class, h_solvent_emb_dim)
+            if c_solvent_emb_dim > 0:
+                self.c_solvent_embedding = torch.nn.Embedding(num_solvent_class, c_solvent_emb_dim)
+        else:
+            self.lin_out = Projection(hidden_channels, c_out_channels, c_out_hidden)
+            self.lin_out_h = Projection(hidden_channels, h_out_channels, h_out_hidden)
+
+        
     def predict_c(self, x, data):
         z = data.x
         batch = data.batch
@@ -161,9 +172,19 @@ class NodeEncodeInterface(nn.Module):
         out_c = self.lin_out(c_features)
 
         # for each c, gather its h features and predict h shifts
+        if self.use_solvent:
+            solvent_class = data.solvent_class 
+            ##### Embedding solvent class
+            solvent_class = self.h_solvent_embedding(solvent_class)
+            # batch=data.batch
+            solvent_class_per_node = solvent_class[batch]
+            x = torch.concat([solvent_class_per_node, x], dim=1)
+        
         h_features_average = []
+        c_idx_connected_h = [] # this is the graph index that represents C node connected to H
+        c_pred_idx = [] # this is the prediction index within the C predictions
         # Loop through each carbon node
-        for c_node in carbon_nodes:
+        for c_idx, c_node in enumerate(carbon_nodes):
             # Find edges where the carbon node is a source
             connected_edges = (data.edge_index[0] == c_node).nonzero(as_tuple=True)[0]
 
@@ -172,6 +193,8 @@ class NodeEncodeInterface(nn.Module):
                                    data.edge_index[1, e] in hydrogen_nodes]
 
             if len(connected_hydrogens) > 0:
+                c_idx_connected_h.append(c_node)
+                c_pred_idx.append(c_idx)
                 # Extract features for these hydrogen nodes
                 h_node_features = x[connected_hydrogens]
 
@@ -184,19 +207,24 @@ class NodeEncodeInterface(nn.Module):
         h_features = torch.stack(h_features_average)
         # print(h_features.shape)
         # print(h_features.shape)
+
         out_h = self.lin_out_h(h_features)
         # print(out_h.shape)
-        out = [out_c, out_h]
+        # out = [out_c, out_h]
+        out = [out_c[c_pred_idx], out_h], c_idx_connected_h
         return out
 
     def forward(self, batch_data):
         x =  self.node_encoder(batch_data)
-        solvent_class = batch_data.solvent_class 
-        ##### Embedding solvent class
-        solvent_class = self.solvent_embedding(solvent_class)
-        batch=batch_data.batch
-        solvent_class_per_node = solvent_class[batch]
-        x = torch.concat([solvent_class_per_node, x], dim=1)
+
+        # move the below to predict_ch and only apply to H
+        # if self.use_solvent:
+        #     solvent_class = batch_data.solvent_class 
+        #     ##### Embedding solvent class
+        #     solvent_class = self.solvent_embedding(solvent_class)
+        #     batch=batch_data.batch
+        #     solvent_class_per_node = solvent_class[batch]
+        #     x = torch.concat([solvent_class_per_node, x], dim=1)
 
         if batch_data[0].has_h:
             # print('predict CH')
