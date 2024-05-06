@@ -4,7 +4,6 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.optim import lr_scheduler
 from data_loaders.load_graph_cnmr_hnmr_alignment import graph_nmr_alignment_data, custom_collate_fn, CustomBatchSampler
-from GraphModel.Comenet_NMR_multitask import ComENet
 from torch.utils.data import DataLoader
 from torch.utils.data import random_split
 import time
