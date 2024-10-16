@@ -48,6 +48,4 @@ Our check point files are saved under ```ckpt``` folder.
 The evaluatiion of the model is recorded in ```evaluation.ipynb```
 The expert validated test dataset can be downloaded from ```https://drive.google.com/drive/folders/1wQxk7mnIwi5aAGaF34_hk7xo6IeEh-IE?usp=drive_link```
 
-    |
-
 
