@@ -34,6 +34,8 @@ First, do supervised training for 1D dataset, run:
 ```
 python main_GNN_1dnmr.py 
 ```
+The SMILES data used for this pre-training is saved under the ```data_csv/1dnmr``` folder. The train-test split is done using seed 0 in the code.
+
 After the pre-training step, generate pseudo-label using our matching algorithm, run:
 ```
 python c_h_matching.py 
@@ -42,6 +44,8 @@ Lastly, use the pseudo-label to refine the model on 2D NMR data, run:
 ```
 python main_GNN_2dnmr.py 
 ```
+The SMILES data used for this pre-training is saved under the ```data_csv/2dnmr``` folder. The train-val split is also done using seed 0 in the code. The test data used to evaluate model performance is an out-of-sample dataset with expert annotation. 
+
 Repeat step 2 and step 3 until model converges.
 
 Our check point files are saved under ```ckpt``` folder.
