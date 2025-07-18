@@ -56,7 +56,7 @@ The expert validated test dataset can be downloaded from ```https://drive.google
 
 ## TODO
 
-### 3D Model Integration with GEOM Dataset
+### 3D GNN Model with Conformers Integration from GEOM Dataset
 
 We need to enhance the current 2D GNN models by incorporating 3D molecular geometry information from the GEOM dataset:
 
