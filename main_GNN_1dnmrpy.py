@@ -140,10 +140,11 @@ def main(args):
     dataloaders = {'train': train_custom_loader, 'val': val_custom_loader}
 
     # 2d gnn model
-    nodeEncoder = GNNNodeEncoder(args.num_layers, args.hidden_channels, JK="last", gnn_type=args.type, aggr='add')
-    model = NodeEncodeInterface(nodeEncoder, hidden_channels=args.hidden_channels, c_out_hidden=args.c_out_hidden, h_out_hidden=args.h_out_hidden, solvent_emb_dim = args.sol_emb_dim)
+    #nodeEncoder = GNNNodeEncoder(args.num_layers, args.hidden_channels, JK="last", gnn_type=args.type, aggr='add')
+    #model = NodeEncodeInterface(nodeEncoder, hidden_channels=args.hidden_channels, c_out_hidden=args.c_out_hidden, h_out_hidden=args.h_out_hidden, solvent_emb_dim = args.sol_emb_dim)
     # 3d gnn model
-    # model = ComENet(in_embed_size=3, out_channels=1, agg_method='sum', hidden_channels=args.hidden_channels, c_out_hidden=args.c_out_hidden,\
+    
+     model = ComENet(in_embed_size=3, out_channels=1, agg_method='sum', hidden_channels=args.hidden_channels, c_out_hidden=args.c_out_hidden,\
                      # h_out_hidden=args.h_out_hidden, num_layers=args.num_layers, num_output_layers=args.num_output_layers)
 
     print(model)
