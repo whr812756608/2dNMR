@@ -54,4 +54,40 @@ Our check point files are saved under ```ckpt``` folder.
 The evaluatiion of the model is recorded in ```evaluation.ipynb```
 The expert validated test dataset can be downloaded from ```https://drive.google.com/drive/folders/1wQxk7mnIwi5aAGaF34_hk7xo6IeEh-IE?usp=drive_link```
 
+## TODO
+
+### 3D Model Integration with GEOM Dataset
+
+We need to enhance the current 2D GNN models by incorporating 3D molecular geometry information from the GEOM dataset:
+
+#### Objectives:
+- **Replace 1D GNN Model**: Update the current 1D NMR prediction model in `main_GNN_1dnmr.py` to use the 3D model architecture located in the `GraphModel` folder
+- **Replace 2D GNN Model**: Update the current 2D NMR prediction model in `main_GNN_2dnmr.py` to use the 3D model architecture located in the `GraphModel` folder
+- **Integrate 3D Coordinates**: Incorporate molecular XYZ coordinates from the GEOM dataset as additional input features
+
+#### Implementation Steps:
+1. **Data Preparation**: 
+   - Extract molecular XYZ coordinates from GEOM dataset
+   - Align GEOM molecular structures with existing SMILES data
+   - Create data loaders that combine 2D molecular graphs with 3D coordinate information
+
+2. **Model Architecture Updates**:
+   - Modify the GNN architecture in `GraphModel` folder to accept 3D coordinate inputs
+   - Update feature extraction to incorporate spatial information
+   - Ensure backward compatibility with existing checkpoint files
+
+3. **Training Pipeline Integration**:
+   - Update `main_GNN_1dnmr.py` to use the new 3D-aware model
+   - Update `main_GNN_2dnmr.py` to use the new 3D-aware model
+   - Modify the pseudo-labeling process in `c_h_matching.py` if needed
+
+4. **Evaluation and Validation**:
+   - Compare performance of 3D-enhanced models against baseline 2D models
+   - Update evaluation metrics in `evaluation.ipynb`
+   - Validate on the expert-annotated test dataset
+
+#### Expected Benefits:
+- Improved prediction accuracy by incorporating spatial molecular information
+- Better understanding of conformational effects on NMR spectra
+- Enhanced model interpretability through 3D structure-activity relationships
 
