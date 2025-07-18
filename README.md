@@ -72,9 +72,9 @@ We need to enhance the current 2D GNN models by incorporating 3D molecular geome
    - Create data loaders that combine 2D molecular graphs with 3D coordinate information
 
 2. **Model Architecture Updates**:
-   - Modify the GNN architecture in `GraphModel` folder to accept 3D coordinate inputs
-   - Update feature extraction to incorporate spatial information
-   - Ensure backward compatibility with existing checkpoint files
+   - 1. Use 3D GNN model in `GraphModel` folder (SchNet, DimeNet++, ComENet, and SphereNet.)
+   - 2. Modify the current GNN architecture in `GraphModel` folder to accept 3D coordinate inputs
+
 
 3. **Training Pipeline Integration**:
    - Update `main_GNN_1dnmr.py` to use the new 3D-aware model
@@ -86,8 +86,4 @@ We need to enhance the current 2D GNN models by incorporating 3D molecular geome
    - Update evaluation metrics in `evaluation.ipynb`
    - Validate on the expert-annotated test dataset
 
-#### Expected Benefits:
-- Improved prediction accuracy by incorporating spatial molecular information
-- Better understanding of conformational effects on NMR spectra
-- Enhanced model interpretability through 3D structure-activity relationships
 
