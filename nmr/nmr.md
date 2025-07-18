@@ -7,4 +7,4 @@ The NMR dataset is available on our shared Google Drive.
 
 1. Access the shared Google Drive folder: [GEOM](https://drive.google.com/drive/folders/11ejx1NOPgTSpsfIZibpsdj3-C8DXdVDB?usp=drive_link)
 
-2. Download the folder  `nmr` to your desired path
+2. Download the folder  `NMRSpectrum` to your desired path
