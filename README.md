@@ -58,7 +58,9 @@ The expert validated test dataset can be downloaded from ```https://drive.google
 
 ### 3D GNN Model with Conformers Integration from GEOM Dataset
 
-We need to enhance the current 2D GNN models by incorporating 3D molecular geometry information from the GEOM dataset:
+We need to enhance the current 2D GNN models by incorporating 3D molecular geometry information from the GEOM dataset 
+
+shared Google Drive folder: [GEOM](https://drive.google.com/drive/folders/11ejx1NOPgTSpsfIZibpsdj3-C8DXdVDB?usp=drive_link)
 
 #### Objectives:
 - **Replace 1D GNN Model**: Update the current 1D NMR prediction model in `main_GNN_1dnmr.py` to use the 3D model architecture located in the `GraphModel` folder
