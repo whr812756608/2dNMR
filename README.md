@@ -83,9 +83,4 @@ shared Google Drive folder: [GEOM](https://drive.google.com/drive/folders/11ejx1
    - Update `main_GNN_2dnmr.py` to use the new 3D-aware model
    - Modify the pseudo-labeling process in `c_h_matching.py` if needed
 
-4. **Evaluation and Validation**:
-   - Compare performance of 3D-enhanced models against baseline 2D models
-   - Update evaluation metrics in `evaluation.ipynb`
-   - Validate on the expert-annotated test dataset
-
 
