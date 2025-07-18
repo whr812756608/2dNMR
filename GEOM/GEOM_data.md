@@ -1,6 +1,5 @@
 # GEMO Dataset
 
-
 The GEMO dataset is available on our shared Google Drive.
 
 ### Download Instructions
