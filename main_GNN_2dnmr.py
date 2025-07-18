@@ -14,6 +14,7 @@ import pickle
 import argparse
 import os
 from GraphModel.GNN_2d_hsolvent import GNNNodeEncoder, NodeEncodeInterface
+from GraphModel.Comenet_NMR import ComENet
 
 
 def train_model(model, dataloaders, optimizer, scheduler, checkpoint_path, num_epochs=1, train_c=True):
